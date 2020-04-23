@@ -6,30 +6,31 @@ $(function() {
       // additional error messages or events
     },
     submitSuccess: function($form, event) {
+		//alert("hii");
       event.preventDefault(); // prevent default submit behaviour
       // get values from FORM
       var name = $("input#name").val();
       var email = $("input#email").val();
       var phone = $("input#phone").val();
       var message = $("textarea#message").val();
+	  var parmaDetails = "chat_id=201910224&text=";
+	  var payload= parmaDetails.concat(name,email,phone,message);
+	  console.log(payload);
       var firstName = name; // For Success/Failure Message
       // Check for white space in name for Success/Fail message
       if (firstName.indexOf(' ') >= 0) {
         firstName = name.split(' ').slice(0, -1).join(' ');
       }
       $this = $("#sendMessageButton");
+	  //alert("hii");
       $this.prop("disabled", true); // Disable submit button until AJAX call is complete to prevent duplicate messages
       $.ajax({
-        url: "././mail/contact_me.php",
-        type: "POST",
-        data: {
-          name: name,
-          phone: phone,
-          email: email,
-          message: message
-        },
+        url: "https://api.telegram.org/bot503186988:AAFt1CY4eGJAbtriFQA2lxuOnLByQun8Isw/sendMessage",
+        type: "GET",
+        data: payload,
         cache: false,
         success: function() {
+			console.log("inside success");
           // Success message
           $('#success').html("<div class='alert alert-success'>");
           $('#success > .alert-success').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
@@ -42,6 +43,7 @@ $(function() {
           $('#contactForm').trigger("reset");
         },
         error: function() {
+			console.log("inside error");
           // Fail message
           $('#success').html("<div class='alert alert-danger'>");
           $('#success > .alert-danger').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
