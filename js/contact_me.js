@@ -14,7 +14,7 @@ $(function() {
       var phone = $("input#phone").val();
       var message = $("textarea#message").val();
 	  var parmaDetails = "chat_id=201910224&text=";
-	  var payload= parmaDetails.concat(name,email,phone,message);
+	  var payload= parmaDetails.concat(" Name:",name," Email:",email," Phone no:",phone," Message:",message,"&parse_mode=HTML");
 	  console.log(payload);
       var firstName = name; // For Success/Failure Message
       // Check for white space in name for Success/Fail message
