@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Naveen's Blog about his work and timelines</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+  <!-- Custom styles for this template -->
+  <link href="css/clean-blog.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Hello World.. Naveen here</a>
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        Menu
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="about.html">About</a>
+          </li>
+          <!-- <li class="nav-item"> -->
+            <!-- <a class="nav-link" href="post.html">Sample Post</a> -->
+          <!-- </li> -->
+          <li class="nav-item">
+            <a class="nav-link" href="contact.html">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url('img/post-bg.jpg')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-heading">
+            <h1>Setting up telegram bot as an anywhere message poster</h1>
+            <span class="meta">Posted by
+              <a href="#">Naveen</a>
+              on April 24, 2020</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Post Content -->
+  <article>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+		
+          <p><strong>Use case</strong>: Creating an endpoint that posts any text message to your telegram chat without any login</p>
+<p><strong>Required :&nbsp;</strong></p>
+<ol style="list-style-type: lower-roman;">
+    <li><strong>Telegram account</strong></li>
+</ol>
+<p style="text-align: justify;">Sometimes we are into a situation where we want to send a text to our mobile or laptop or vice versa. So usually we come up with solutions like sending messages to our dear ones from any messenger/IMs/email from the laptop and we access from mobile to copy that text. But basically it requires multiple steps to do that.</p>
+<p style="text-align: justify;">I personally faced issues when I want to copy some text from the office laptop to my mobile but all web IMs are blocked. So created a google document and shared publicly and used to add text in that document and later access that in mobile. To get it simpler is there any one-click way of sending a message and we can access it from anywhere.</p>
+<p style="text-align: justify;">So finally I came up with Telegram bots. This solution is not so great but can be helpful in some scenarios where we don&#39;t need to login to any account to send a message.</p>
+<p style="text-align: justify;">Telegram Bot API is so much vast and I just used a bit of it. So lets dive into this little utility process.</p>
+<p style="text-align: justify;"><br></p>
+<h3>Step 1: Setting up Telegram Bot from Bot Father</h3>
+<p>The first thing we have to do is set up a bot in our telegram account. To do that telegram provides a user handle that handles are operations regarding bot. So add user @BotFather.&nbsp;</p>
+<h3>Step 2: Creating a bot</h3>
+<p>Click on /newbot link and follow the steps to create a bot with a name, About, Description, and BotPic.&nbsp;</p>
+<h3>Step 3: Copying Bot token</h3>
+<p>Click on /mybots &nbsp;and go to the created bot details. Click on API Token and note down the token somewhere ., this token is the one where we use further to access our endpoint. Bot API token looks like as below&nbsp;</p>
+<blockquote>
+    <p>425896547:AACDERDDSewr34343GJAbtriFQA2lxuOnLByQun8Isw</p>
+</blockquote>
+<h3>Step 4: Generating Endpoint with bot token</h3>
+<p>So telegram API to send message is&nbsp;</p>
+<p><a href="https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={chat id of the user where we want to send message}&text=">https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={chat id of the user where we want to send message}&amp;text=</a></p>
+<h4>To get to know about the chat id please follow below steps.</h4>
+<ol style="list-style-type: lower-roman;">
+    <li>Add above created bot in your Telegram account.</li>
+    <li>Send a test message to the bot chat.</li>
+    <li>Navigate to this URL. https://api.telegram.org/bot{bot_token}/getUpdates</li>
+    <li>You will receive a response as below. Take id in that resposne.</li>
+</ol>
+<blockquote>
+    <p>{&quot;ok&quot;:true,&quot;result&quot;:[{&quot;update_id&quot;:1457854,&quot;message&quot;:{&quot;message_id&quot;:2174,&quot;from&quot;:{&quot;id&quot;:123456789,&quot;is_bot&quot;:false,&quot;first_name&quot;:&quot;name&quot;,&quot;username&quot;:&quot;user&quot;,&quot;language_code&quot;:&quot;en&quot;},&quot;chat&quot;:{&quot;id&quot;:123456789,&quot;first_name&quot;:&quot;/\\//\\\\/!/\\/&quot;,&quot;username&quot;:&quot;user&quot;,&quot;type&quot;:&quot;private&quot;},&quot;date&quot;:1587729104,&quot;text&quot;:&quot;Hi&quot;}}]}</p>
+</blockquote>
+<p>So going back to our API , we will insert chat id in the previous URL.</p>
+<p><a href="https://api.telegram.org/bot{bot_token}/sendMessage?chat_id=123456789&text= {any text message}">https://api.telegram.org/bot{bot_token}/sendMessage?chat_id=123456789&amp;text= {any text message}</a></p>
+<p>So from anywhere you just hit the URL and get the text given in the text field will be delivered to your telegram account.</p>
+<p>So to remember the above URL is pretty hard as it contains token and all. So to simplify this what we do is generate a shorter URL from TinyURL.Suppose if my tiny url is www.tinyurl.com/mytelegrambot then we can easily remember the URL.</p>
+<p>Apart from sending messages through URL we can also read messages that we sent in via same URL by changing a bit. &nbsp;<a href="https://api.telegram.org/bot{bot_token}/getUpdates">https://api.telegram.org/bot{bot_token}/getUpdates</a></p>
+<h3>Usual issues:</h3>
+<ol>
+    <li>We have to give compulsory text field value to a successful message post response.</li>
+    <li>If &nbsp;the text contains spaces, URL request failed. So to allow spaces in the text we have to add another flag., parse_mode=HTML</li>
+</ol>
+<p>I hope it helps as a utility to send a message to our Telegram account from anywhere without logging. </p>
+           
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <hr>
+
+  <!-- Footer -->
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <ul class="list-inline text-center">
+            <li class="list-inline-item">
+              <a href="https://www.linkedin.com/in/naveenyalla22/">
+                <span class="fa-stack fa-lg">
+                  <i class="fas fa-circle fa-stack-2x"></i>
+                  <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+            </li>
+            <!-- <li class="list-inline-item"> -->
+              <!-- <a href="#"> -->
+                <!-- <span class="fa-stack fa-lg"> -->
+                  <!-- <i class="fas fa-circle fa-stack-2x"></i> -->
+                  <!-- <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i> -->
+                <!-- </span> -->
+              <!-- </a> -->
+            <!-- </li> -->
+            <li class="list-inline-item">
+              <a href="https://github.com/naveenyalla22">
+                <span class="fa-stack fa-lg">
+                  <i class="fas fa-circle fa-stack-2x"></i>
+                  <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+            </li>
+          </ul>
+          <p class="copyright text-muted">Copyright &copy; Your Website 2019</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Custom scripts for this template -->
+  <script src="js/clean-blog.min.js"></script>
+
+</body>
+
+</html>
