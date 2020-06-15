@@ -52,6 +52,9 @@ $(function() {
           $('#success > .alert-danger').append('</div>');
           //clear all fields
           $('#contactForm').trigger("reset");
+		var msg = new SpeechSynthesisUtterance();
+			msg.text = firstName.concat(", Thanks for submitting. Will get back to you soon.");
+			window.speechSynthesis.speak(msg);
         },
         complete: function() {
           setTimeout(function() {
