@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Naveen's Blog about his work and timelines</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+  <!-- Custom styles for this template -->
+  <link href="css/clean-blog.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Hello World.. Naveen here</a>
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        Menu
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="about.html">About</a>
+          </li>
+          <!-- <li class="nav-item"> -->
+            <!-- <a class="nav-link" href="post.html">Sample Post</a> -->
+          <!-- </li> -->
+          <li class="nav-item">
+            <a class="nav-link" href="contact.html">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url('img/post-bg.jpg')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-heading">
+            <h1>Java 8 parallel processing with completable future</h1>
+            <span class="meta">Posted by
+              <a href="#">Naveen Yalla</a>
+              on May 24, 2020</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Post Content -->
+  <article>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+           <p style="box-sizing: border-box; margin: 5px 0px 15px; color: rgb(34, 38, 53); font-family: Cambria, serif; font-size: 19px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;">Everyday we see the programming use cases which should handle data-parallel to improve the performance. &nbsp;From Java 8, with CompletableFuture we can achieve parallel programming much simpler and readable way with methods like allOf , join etc..&nbsp;</p>
+<p style="box-sizing: border-box; margin: 5px 0px 15px; color: rgb(34, 38, 53); font-family: Cambria, serif; font-size: 19px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;">Whenever we calling any method we have to decide whether we need any return value from that method or not. If we don&#39;t want any return value we can just call that method and leave the control to it. &nbsp;Because in CompletableFuture we have 2 methods which addresses the above cases.</p>
+<ol style="box-sizing: border-box; margin-top: 0px; margin-bottom: 10px; color: rgb(34, 38, 53); font-family: Cambria, serif; font-size: 19px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial; list-style-type: upper-alpha;">
+    <li style="box-sizing: border-box; padding: 0px 0px 8px;">CompletableFuture.supplyAsync -- In case if you want the return value</li>
+    <li style="box-sizing: border-box; padding: 0px 0px 8px;">CompletableFuture.runAsync &nbsp; &nbsp; &nbsp;-- &nbsp;In case if you don&#39;t want the return value</li>
+</ol>
+<p style="box-sizing: border-box; margin: 5px 0px 15px; color: rgb(34, 38, 53); font-family: Cambria, serif; font-size: 19px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;">So let&#39;s take an example, we are taking 3 tasks that have to be executed parallel.&nbsp;</p>
+<ul style="box-sizing: border-box; margin-top: 0px; margin-bottom: 10px; color: rgb(34, 38, 53); font-family: Cambria, serif; font-size: 19px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;">
+    <li style="box-sizing: border-box; padding: 0px 0px 8px;">Method 1: add -&gt; it takes the arguments of 2 variable and returns the sum</li>
+</ul>
+<div class="codeMirror-wrapper" style="box-sizing: border-box; color: rgb(34, 38, 53); font-family: Cambria, serif; font-size: 19px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;">
+    <div contenteditable="false" style="box-sizing: border-box;">
+        <div class="codeHeader" style="box-sizing: border-box; position: relative; padding: 0px 15px; font-family: sans-serif; font-size: 14px; background-color: rgb(247, 247, 247); color: rgb(153, 153, 153); margin: 0px;">
+            <div class="nameLanguage" style="box-sizing: border-box;">Java</div><i class="icon-cancel-circled-1 cm-remove" style="box-sizing: border-box; display: block; position: absolute; right: 0px; top: 0px; cursor: pointer;">&nbsp;</i>
+        </div>
+        <div class="codeMirror-code--wrapper" data-code=" public static  Integer  addFun1(int a, int b) {        System.out.println(Thread.currentThread().getName());        for (int i=0;i<10;i++){            System.out.print(Thread.currentThread().getName()+i);        }        return  a+b ;    }" data-lang="text/x-java" style="box-sizing: border-box;">
+            <div class="CodeMirror cm-s-default CodeMirror-wrap" style="box-sizing: border-box; border: none; background: white; font-family: monospace; height: auto; color: black; position: relative; overflow: hidden; display: block;">
+                <div style="box-sizing: border-box; overflow: hidden; position: relative; width: 3px; height: 0px; top: 97px; left: 112.219px;"><textarea spellcheck="false" tabindex="0" value="" style="box-sizing: border-box; color: inherit; font: inherit; margin: 0px; overflow: auto; position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div>
+                <div class="CodeMirror-scroll" style="box-sizing: content-box; margin-bottom: 0px; margin-right: -30px; padding-bottom: 30px; height: 144px; outline: none; position: relative; overflow: visible !important;" tabindex="-1">
+                    <div class="CodeMirror-sizer" style="box-sizing: content-box; position: relative; border-right: 13px solid transparent; min-height: 169px; margin-left: 31px; margin-bottom: -17px; padding-right: 0px; padding-bottom: 0px;">
+                        <div style="box-sizing: border-box; position: relative; top: 0px;">
+                            <div class="CodeMirror-lines" style="box-sizing: border-box; padding: 4px 0px; cursor: text; min-height: 1px;">
+                                <div style="box-sizing: border-box; position: relative; outline: none;">
+                                    <div class="CodeMirror-measure" style="box-sizing: border-box; position: absolute; width: 794px; height: 0px; overflow: hidden; visibility: hidden;">
+                                        <pre style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: static; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;">
+</pre>
+                                    </div>
+                                    <div class="CodeMirror-measure" style="box-sizing: border-box; position: absolute; width: 794px; height: 0px; overflow: hidden; visibility: hidden;"><br style="box-sizing: border-box;"></div>
+                                    <div style="box-sizing: border-box; position: relative; z-index: 1;"><br style="box-sizing: border-box;"></div>
+                                    <div class="CodeMirror-cursors" style="box-sizing: border-box; visibility: hidden; position: relative; z-index: 3;">
+                                        <div class="CodeMirror-cursor" style="box-sizing: border-box; border-left: 1px solid black; border-right: none; width: 0px; position: absolute; pointer-events: none; left: 80.2188px; top: 92px; height: 23px;"><br></div>
+                                    </div>
+                                    <div class="CodeMirror-code" style="box-sizing: border-box; outline: none; font-family: monospace; font-size: 13px;">
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">1</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;"> <span class="cm-keyword" style="box-sizing: border-box; color: rgb(119, 0, 136);">public</span> <span class="cm-keyword" style="box-sizing: border-box; color: rgb(119, 0, 136);">static</span>  <span class="cm-type" style="box-sizing: border-box; color: rgb(0, 136, 85);">Integer</span>  <span class="cm-def" style="box-sizing: border-box; color: rgb(0, 0, 255);">addFun1</span>(<span class="cm-type" style="box-sizing: border-box; color: rgb(0, 136, 85);">int</span> <span class="cm-variable" style="box-sizing: border-box;">a</span>, <span class="cm-type" style="box-sizing: border-box; color: rgb(0, 136, 85);">int</span> <span class="cm-variable" style="box-sizing: border-box;">b</span>) {</span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">2</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;">        <span class="cm-variable" style="box-sizing: border-box;">System</span>.<span class="cm-variable" style="box-sizing: border-box;">out</span>.<span class="cm-variable" style="box-sizing: border-box;">println</span>(<span class="cm-variable" style="box-sizing: border-box;">Thread</span>.<span class="cm-variable" style="box-sizing: border-box;">currentThread</span>().<span class="cm-variable" style="box-sizing: border-box;">getName</span>());</span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">3</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;">        <span class="cm-keyword" style="box-sizing: border-box; color: rgb(119, 0, 136);">for</span> (<span class="cm-type" style="box-sizing: border-box; color: rgb(0, 136, 85);">int</span> <span class="cm-variable" style="box-sizing: border-box;">i</span><span class="cm-operator" style="box-sizing: border-box;">=</span><span class="cm-number" style="box-sizing: border-box; color: rgb(17, 102, 68);">0</span>;<span class="cm-variable" style="box-sizing: border-box;">i</span><span class="cm-operator" style="box-sizing: border-box;">&lt;</span><span class="cm-number" style="box-sizing: border-box; color: rgb(17, 102, 68);">10</span>;<span class="cm-variable" style="box-sizing: border-box;">i</span><span class="cm-operator" style="box-sizing: border-box;">++</span>){</span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">4</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;">            <span class="cm-variable" style="box-sizing: border-box;">System</span>.<span class="cm-variable" style="box-sizing: border-box;">out</span>.<span class="cm-variable" style="box-sizing: border-box;">print</span>(<span class="cm-variable" style="box-sizing: border-box;">Thread</span>.<span class="cm-variable" style="box-sizing: border-box;">currentThread</span>().<span class="cm-variable" style="box-sizing: border-box;">getName</span>()<span class="cm-operator" style="box-sizing: border-box;">+</span><span class="cm-variable" style="box-sizing: border-box;">i</span>);</span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">5</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;">        }</span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">6</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;">        <span class="cm-keyword" style="box-sizing: border-box; color: rgb(119, 0, 136);">return</span>  <span class="cm-variable" style="box-sizing: border-box;">a</span><span class="cm-operator" style="box-sizing: border-box;">+</span><span class="cm-variable" style="box-sizing: border-box;">b</span> ;</span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">7</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;">    }</span></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="box-sizing: border-box; position: absolute; height: 13px; width: 1px; border-bottom: 0px solid transparent; top: 169px;"><br style="box-sizing: border-box;"></div>
+                    <div class="CodeMirror-gutters" style="box-sizing: content-box; width: 30px !important; border-right: 1px solid rgb(221, 221, 221); background-color: rgb(247, 247, 247); white-space: nowrap; position: absolute; left: 0px; top: 0px; min-height: 100%; z-index: 3; height: 182px;">
+                        <div class="CodeMirror-gutter CodeMirror-linenumbers" style="box-sizing: content-box; width: 31px; white-space: normal; height: 27px; display: inline-block; vertical-align: top; margin-bottom: -30px;"><br style="box-sizing: border-box;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ul style="box-sizing: border-box; margin-top: 0px; margin-bottom: 10px; color: rgb(34, 38, 53); font-family: Cambria, serif; font-size: 19px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;">
+    <li style="box-sizing: border-box; padding: 0px 0px 8px;">Method 2: sub-&gt; it takes the arguments of 2 variable and returns the subtraction</li>
+</ul>
+<div class="codeMirror-wrapper" style="box-sizing: border-box; color: rgb(34, 38, 53); font-family: Cambria, serif; font-size: 19px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;">
+    <div contenteditable="false" style="box-sizing: border-box;">
+        <div class="codeHeader" style="box-sizing: border-box; position: relative; padding: 0px 15px; font-family: sans-serif; font-size: 14px; background-color: rgb(247, 247, 247); color: rgb(153, 153, 153); margin: 0px;">
+            <div class="nameLanguage" style="box-sizing: border-box;">Java</div><i class="icon-cancel-circled-1 cm-remove" style="box-sizing: border-box; display: block; position: absolute; right: 0px; top: 0px; cursor: pointer;">&nbsp;</i>
+        </div>
+        <div class="codeMirror-code--wrapper" data-code=" public static  Integer  subFun1(int a, int b) {        System.out.println(Thread.currentThread().getName());        for (int i=0;i<10;i++){            System.out.print(Thread.currentThread().getName()+i);        }        return  a-b ;    } 
+" data-lang="text/x-java" style="box-sizing: border-box;">
+            <div class="CodeMirror cm-s-default CodeMirror-wrap" style="box-sizing: border-box; border: none; background: white; font-family: monospace; height: auto; color: black; position: relative; overflow: hidden; display: block;">
+                <div style="box-sizing: border-box; overflow: hidden; position: relative; width: 3px; height: 0px; top: 189px; left: 36px;"><textarea spellcheck="false" tabindex="0" value="" style="box-sizing: border-box; color: inherit; font: inherit; margin: 0px; overflow: auto; position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div>
+                <div class="CodeMirror-scroll" style="box-sizing: content-box; margin-bottom: 0px; margin-right: -30px; padding-bottom: 30px; height: 180px; outline: none; position: relative; overflow: visible !important;" tabindex="-1">
+                    <div class="CodeMirror-sizer" style="box-sizing: content-box; position: relative; border-right: 13px solid transparent; min-height: 215px; margin-left: 31px; margin-bottom: -17px; padding-right: 0px; padding-bottom: 0px;">
+                        <div style="box-sizing: border-box; position: relative; top: 0px;">
+                            <div class="CodeMirror-lines" style="box-sizing: border-box; padding: 4px 0px; cursor: text; min-height: 1px;">
+                                <div style="box-sizing: border-box; position: relative; outline: none;">
+                                    <div class="CodeMirror-measure" style="box-sizing: border-box; position: absolute; width: 794px; height: 0px; overflow: hidden; visibility: hidden;">
+                                        <pre style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: static; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;">
+</pre>
+                                        <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 22px !important; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4;">
+                                            <div style="box-sizing: border-box;"><br></div>
+                                        </div>
+                                    </div>
+                                    <div class="CodeMirror-measure" style="box-sizing: border-box; position: absolute; width: 794px; height: 0px; overflow: hidden; visibility: hidden;"><br style="box-sizing: border-box;"></div>
+                                    <div style="box-sizing: border-box; position: relative; z-index: 1;"><br style="box-sizing: border-box;"></div>
+                                    <div class="CodeMirror-cursors" style="box-sizing: border-box; visibility: hidden; position: relative; z-index: 3;">
+                                        <div class="CodeMirror-cursor" style="box-sizing: border-box; border-left: 1px solid black; border-right: none; width: 0px; position: absolute; pointer-events: none; left: 4px; top: 184px; height: 23px;"><br></div>
+                                    </div>
+                                    <div class="CodeMirror-code" style="box-sizing: border-box; outline: none; font-family: monospace; font-size: 13px;">
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">1</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;"> <span class="cm-keyword" style="box-sizing: border-box; color: rgb(119, 0, 136);">public</span> <span class="cm-keyword" style="box-sizing: border-box; color: rgb(119, 0, 136);">static</span>  <span class="cm-type" style="box-sizing: border-box; color: rgb(0, 136, 85);">Integer</span>  <span class="cm-def" style="box-sizing: border-box; color: rgb(0, 0, 255);">subFun1</span>(<span class="cm-type" style="box-sizing: border-box; color: rgb(0, 136, 85);">int</span> <span class="cm-variable" style="box-sizing: border-box;">a</span>, <span class="cm-type" style="box-sizing: border-box; color: rgb(0, 136, 85);">int</span> <span class="cm-variable" style="box-sizing: border-box;">b</span>) {</span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">2</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;">        <span class="cm-variable" style="box-sizing: border-box;">System</span>.<span class="cm-variable" style="box-sizing: border-box;">out</span>.<span class="cm-variable" style="box-sizing: border-box;">println</span>(<span class="cm-variable" style="box-sizing: border-box;">Thread</span>.<span class="cm-variable" style="box-sizing: border-box;">currentThread</span>().<span class="cm-variable" style="box-sizing: border-box;">getName</span>());</span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">3</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;">        <span class="cm-keyword" style="box-sizing: border-box; color: rgb(119, 0, 136);">for</span> (<span class="cm-type" style="box-sizing: border-box; color: rgb(0, 136, 85);">int</span> <span class="cm-variable" style="box-sizing: border-box;">i</span><span class="cm-operator" style="box-sizing: border-box;">=</span><span class="cm-number" style="box-sizing: border-box; color: rgb(17, 102, 68);">0</span>;<span class="cm-variable" style="box-sizing: border-box;">i</span><span class="cm-operator" style="box-sizing: border-box;">&lt;</span><span class="cm-number" style="box-sizing: border-box; color: rgb(17, 102, 68);">10</span>;<span class="cm-variable" style="box-sizing: border-box;">i</span><span class="cm-operator" style="box-sizing: border-box;">++</span>){</span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">4</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;">            <span class="cm-variable" style="box-sizing: border-box;">System</span>.<span class="cm-variable" style="box-sizing: border-box;">out</span>.<span class="cm-variable" style="box-sizing: border-box;">print</span>(<span class="cm-variable" style="box-sizing: border-box;">Thread</span>.<span class="cm-variable" style="box-sizing: border-box;">currentThread</span>().<span class="cm-variable" style="box-sizing: border-box;">getName</span>()<span class="cm-operator" style="box-sizing: border-box;">+</span><span class="cm-variable" style="box-sizing: border-box;">i</span>);</span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">5</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;">        }</span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">6</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;">        <span class="cm-keyword" style="box-sizing: border-box; color: rgb(119, 0, 136);">return</span>  <span class="cm-variable" style="box-sizing: border-box;">a</span><span class="cm-operator" style="box-sizing: border-box;">-</span><span class="cm-variable" style="box-sizing: border-box;">b</span> ;</span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">7</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;">    }</span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">8</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><br style="box-sizing: border-box;"></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">9</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><br style="box-sizing: border-box;"></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="box-sizing: border-box; position: absolute; height: 13px; width: 1px; border-bottom: 0px solid transparent; top: 215px;"><br style="box-sizing: border-box;"></div>
+                    <div class="CodeMirror-gutters" style="box-sizing: content-box; width: 30px !important; border-right: 1px solid rgb(221, 221, 221); background-color: rgb(247, 247, 247); white-space: nowrap; position: absolute; left: 0px; top: 0px; min-height: 100%; z-index: 3; height: 228px;">
+                        <div class="CodeMirror-gutter CodeMirror-linenumbers" style="box-sizing: content-box; width: 31px; white-space: normal; height: 27px; display: inline-block; vertical-align: top; margin-bottom: -30px;"><br style="box-sizing: border-box;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ul style="box-sizing: border-box; margin-top: 0px; margin-bottom: 10px; color: rgb(34, 38, 53); font-family: Cambria, serif; font-size: 19px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;">
+    <li style="box-sizing: border-box; padding: 0px 0px 8px;">Method 3: mul-&gt; it takes the arguments of 2 variable and returns the multiplication</li>
+</ul>
+<div class="codeMirror-wrapper" style="box-sizing: border-box; color: rgb(34, 38, 53); font-family: Cambria, serif; font-size: 19px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;">
+    <div contenteditable="false" style="box-sizing: border-box;">
+        <div class="codeHeader" style="box-sizing: border-box; position: relative; padding: 0px 15px; font-family: sans-serif; font-size: 14px; background-color: rgb(247, 247, 247); color: rgb(153, 153, 153); margin: 0px;">
+            <div class="nameLanguage" style="box-sizing: border-box;">Java</div><i class="icon-cancel-circled-1 cm-remove" style="box-sizing: border-box; display: block; position: absolute; right: 0px; top: 0px; cursor: pointer;">&nbsp;</i>
+        </div>
+        <div class="codeMirror-code--wrapper" data-code=" public static  Integer  mulFun1(int a, int b) {        System.out.println(Thread.currentThread().getName());        for (int i=0;i<10;i++){            System.out.print(Thread.currentThread().getName()+i);        }        return  a*b ;    } 
+
+ " data-lang="text/x-java" style="box-sizing: border-box;">
+            <div class="CodeMirror cm-s-default CodeMirror-wrap" style="box-sizing: border-box; border: none; background: white; font-family: monospace; height: auto; color: black; position: relative; overflow: hidden; display: block;">
+                <div style="box-sizing: border-box; overflow: hidden; position: relative; width: 3px; height: 0px; top: 235px; left: 36px;"><textarea spellcheck="false" tabindex="0" value="" style="box-sizing: border-box; color: inherit; font: inherit; margin: 0px; overflow: auto; position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div>
+                <div class="CodeMirror-scroll" style="box-sizing: content-box; margin-bottom: 0px; margin-right: -30px; padding-bottom: 30px; height: 216px; outline: none; position: relative; overflow: visible !important;" tabindex="-1">
+                    <div class="CodeMirror-sizer" style="box-sizing: content-box; position: relative; border-right: 13px solid transparent; min-height: 261px; margin-left: 31px; margin-bottom: -17px; padding-right: 0px; padding-bottom: 0px;">
+                        <div style="box-sizing: border-box; position: relative; top: 0px;">
+                            <div class="CodeMirror-lines" style="box-sizing: border-box; padding: 4px 0px; cursor: text; min-height: 1px;">
+                                <div style="box-sizing: border-box; position: relative; outline: none;">
+                                    <div class="CodeMirror-measure" style="box-sizing: border-box; position: absolute; width: 794px; height: 0px; overflow: hidden; visibility: hidden;">
+                                        <pre style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: static; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;">
+</pre>
+                                        <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 22px !important; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4;">
+                                            <div style="box-sizing: border-box;"><br></div>
+                                        </div>
+                                        <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 22px !important; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4;">
+                                            <div style="box-sizing: border-box;"><br></div>
+                                        </div>
+                                    </div>
+                                    <div class="CodeMirror-measure" style="box-sizing: border-box; position: absolute; width: 794px; height: 0px; overflow: hidden; visibility: hidden;"><br style="box-sizing: border-box;"></div>
+                                    <div style="box-sizing: border-box; position: relative; z-index: 1;"><br style="box-sizing: border-box;"></div>
+                                    <div class="CodeMirror-cursors" style="box-sizing: border-box; visibility: hidden; position: relative; z-index: 3;">
+                                        <div class="CodeMirror-cursor" style="box-sizing: border-box; border-left: 1px solid black; border-right: none; width: 0px; position: absolute; pointer-events: none; left: 4px; top: 230px; height: 23px;"><br></div>
+                                    </div>
+                                    <div class="CodeMirror-code" style="box-sizing: border-box; outline: none; font-family: monospace; font-size: 13px;">
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">1</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;"> <span class="cm-keyword" style="box-sizing: border-box; color: rgb(119, 0, 136);">public</span> <span class="cm-keyword" style="box-sizing: border-box; color: rgb(119, 0, 136);">static</span>  <span class="cm-type" style="box-sizing: border-box; color: rgb(0, 136, 85);">Integer</span>  <span class="cm-def" style="box-sizing: border-box; color: rgb(0, 0, 255);">mulFun1</span>(<span class="cm-type" style="box-sizing: border-box; color: rgb(0, 136, 85);">int</span> <span class="cm-variable" style="box-sizing: border-box;">a</span>, <span class="cm-type" style="box-sizing: border-box; color: rgb(0, 136, 85);">int</span> <span class="cm-variable" style="box-sizing: border-box;">b</span>) {</span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">2</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;">        <span class="cm-variable" style="box-sizing: border-box;">System</span>.<span class="cm-variable" style="box-sizing: border-box;">out</span>.<span class="cm-variable" style="box-sizing: border-box;">println</span>(<span class="cm-variable" style="box-sizing: border-box;">Thread</span>.<span class="cm-variable" style="box-sizing: border-box;">currentThread</span>().<span class="cm-variable" style="box-sizing: border-box;">getName</span>());</span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">3</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;">        <span class="cm-keyword" style="box-sizing: border-box; color: rgb(119, 0, 136);">for</span> (<span class="cm-type" style="box-sizing: border-box; color: rgb(0, 136, 85);">int</span> <span class="cm-variable" style="box-sizing: border-box;">i</span><span class="cm-operator" style="box-sizing: border-box;">=</span><span class="cm-number" style="box-sizing: border-box; color: rgb(17, 102, 68);">0</span>;<span class="cm-variable" style="box-sizing: border-box;">i</span><span class="cm-operator" style="box-sizing: border-box;">&lt;</span><span class="cm-number" style="box-sizing: border-box; color: rgb(17, 102, 68);">10</span>;<span class="cm-variable" style="box-sizing: border-box;">i</span><span class="cm-operator" style="box-sizing: border-box;">++</span>){</span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">4</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;">            <span class="cm-variable" style="box-sizing: border-box;">System</span>.<span class="cm-variable" style="box-sizing: border-box;">out</span>.<span class="cm-variable" style="box-sizing: border-box;">print</span>(<span class="cm-variable" style="box-sizing: border-box;">Thread</span>.<span class="cm-variable" style="box-sizing: border-box;">currentThread</span>().<span class="cm-variable" style="box-sizing: border-box;">getName</span>()<span class="cm-operator" style="box-sizing: border-box;">+</span><span class="cm-variable" style="box-sizing: border-box;">i</span>);</span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">5</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;">        }</span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">6</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;">        <span class="cm-keyword" style="box-sizing: border-box; color: rgb(119, 0, 136);">return</span>  <span class="cm-variable" style="box-sizing: border-box;">a</span><span class="cm-operator" style="box-sizing: border-box;">*</span><span class="cm-variable" style="box-sizing: border-box;">b</span> ;</span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">7</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;">    }</span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">8</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><br style="box-sizing: border-box;"></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">9</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><br style="box-sizing: border-box;"></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">10</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><br style="box-sizing: border-box;"></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">11</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><br style="box-sizing: border-box;"></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="box-sizing: border-box; position: absolute; height: 13px; width: 1px; border-bottom: 0px solid transparent; top: 261px;"><br style="box-sizing: border-box;"></div>
+                    <div class="CodeMirror-gutters" style="box-sizing: content-box; width: 30px !important; border-right: 1px solid rgb(221, 221, 221); background-color: rgb(247, 247, 247); white-space: nowrap; position: absolute; left: 0px; top: 0px; min-height: 100%; z-index: 3; height: 274px;">
+                        <div class="CodeMirror-gutter CodeMirror-linenumbers" style="box-sizing: content-box; width: 31px; white-space: normal; height: 27px; display: inline-block; vertical-align: top; margin-bottom: -30px;"><br style="box-sizing: border-box;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<p style="box-sizing: border-box; margin: 5px 0px 15px; color: rgb(34, 38, 53); font-family: Cambria, serif; font-size: 19px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;"><br style="box-sizing: border-box;"></p>
+<p style="box-sizing: border-box; margin: 5px 0px 15px; color: rgb(34, 38, 53); font-family: Cambria, serif; font-size: 19px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;">Actual &nbsp;CompletableFuture work starts from here. &nbsp;Before adding futures we have to maintain a global list which bundles all the future list.&nbsp;</p>
+<p style="box-sizing: border-box; margin: 5px 0px 15px; color: rgb(34, 38, 53); font-family: Cambria, serif; font-size: 19px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;"><code style='box-sizing: border-box; font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 17.1px; padding: 2px 4px; color: rgb(199, 37, 78); background-color: rgb(249, 242, 244); white-space: nowrap; border-radius: 4px;'>List&lt;CompletableFuture&lt;Integer&gt;&gt; futuresList = new ArrayList&lt;CompletableFuture&lt;Integer&gt;&gt;();</code></p>
+<p style="box-sizing: border-box; margin: 5px 0px 15px; color: rgb(34, 38, 53); font-family: Cambria, serif; font-size: 19px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;"><br></p>
+<p style="box-sizing: border-box; margin: 5px 0px 15px; color: rgb(34, 38, 53); font-family: Cambria, serif; font-size: 19px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;">Then the method which we have created that has to be run parallel we have declare them as CompletableFuture methods.&nbsp;</p>
+<div class="codeMirror-wrapper" style="box-sizing: border-box; color: rgb(34, 38, 53); font-family: Cambria, serif; font-size: 19px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;">
+    <div contenteditable="false" style="box-sizing: border-box;">
+        <div class="codeHeader" style="box-sizing: border-box; position: relative; padding: 0px 15px; font-family: sans-serif; font-size: 14px; background-color: rgb(247, 247, 247); color: rgb(153, 153, 153); margin: 0px;">
+            <div class="nameLanguage" style="box-sizing: border-box;">Java</div><i class="icon-cancel-circled-1 cm-remove" style="box-sizing: border-box; display: block; position: absolute; right: 0px; top: 0px; cursor: pointer;">&nbsp;</i>
+        </div>
+        <div class="codeMirror-code--wrapper" data-code=" CompletableFuture<Integer> addAsy = CompletableFuture.supplyAsync(()->(addFun1(10,5))); CompletableFuture<Integer> subAsy = CompletableFuture.supplyAsync(()->(subFun1(10,5))); CompletableFuture<Integer> mulAsy = CompletableFuture.supplyAsync(()->(mulFun1(10,5)));" data-lang="text/x-java" style="box-sizing: border-box;">
+            <div class="CodeMirror cm-s-default CodeMirror-wrap" style="box-sizing: border-box; border: none; background: white; font-family: monospace; height: auto; color: black; position: relative; overflow: hidden; display: block;">
+                <div style="box-sizing: border-box; overflow: hidden; position: relative; width: 3px; height: 0px; top: 74px; left: 36px;"><textarea spellcheck="false" tabindex="0" value="" style="box-sizing: border-box; color: inherit; font: inherit; margin: 0px; overflow: auto; position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div>
+                <div class="CodeMirror-scroll" draggable="false" style="box-sizing: content-box; margin-bottom: 0px; margin-right: -30px; padding-bottom: 30px; height: 72px; outline: none; position: relative; overflow: visible !important;" tabindex="-1">
+                    <div class="CodeMirror-sizer" style="box-sizing: content-box; position: relative; border-right: 13px solid transparent; min-height: 100px; margin-left: 31px; margin-bottom: -17px; padding-right: 0px; padding-bottom: 0px;">
+                        <div style="box-sizing: border-box; position: relative; top: 0px;">
+                            <div class="CodeMirror-lines" style="box-sizing: border-box; padding: 4px 0px; cursor: text; min-height: 1px;">
+                                <div style="box-sizing: border-box; position: relative; outline: none;">
+                                    <div class="CodeMirror-measure" style="box-sizing: border-box; position: absolute; width: 794px; height: 0px; overflow: hidden; visibility: hidden;">
+                                        <pre style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: static; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;">
+</pre>
+                                    </div>
+                                    <div class="CodeMirror-measure" style="box-sizing: border-box; position: absolute; width: 794px; height: 0px; overflow: hidden; visibility: hidden;"><br style="box-sizing: border-box;"></div>
+                                    <div style="box-sizing: border-box; position: relative; z-index: 1;"><br style="box-sizing: border-box;"></div>
+                                    <div class="CodeMirror-cursors" style="box-sizing: border-box; visibility: hidden; position: relative; z-index: 3;">
+                                        <div class="CodeMirror-cursor" style="box-sizing: border-box; border-left: 1px solid black; border-right: none; width: 0px; position: absolute; pointer-events: none; left: 4px; top: 69px; height: 23px;"><br></div>
+                                    </div>
+                                    <div class="CodeMirror-code" style="box-sizing: border-box; outline: none; font-family: monospace; font-size: 13px;">
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">1</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;"> <span class="cm-variable" style="box-sizing: border-box;">CompletableFuture</span><span class="cm-operator" style="box-sizing: border-box;">&lt;</span><span class="cm-type" style="box-sizing: border-box; color: rgb(0, 136, 85);">Integer</span><span class="cm-operator" style="box-sizing: border-box;">&gt;</span> <span class="cm-variable" style="box-sizing: border-box;">addAsy</span> <span class="cm-operator" style="box-sizing: border-box;">=</span> <span class="cm-variable" style="box-sizing: border-box;">CompletableFuture</span>.<span class="cm-variable" style="box-sizing: border-box;">supplyAsync</span>(()<span class="cm-operator" style="box-sizing: border-box;">-&gt;</span>(<span class="cm-variable" style="box-sizing: border-box;">addFun1</span>(<span class="cm-number" style="box-sizing: border-box; color: rgb(17, 102, 68);">10</span>,<span class="cm-number" style="box-sizing: border-box; color: rgb(17, 102, 68);">5</span>)));</span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">2</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;"><span class="cm-variable" style="box-sizing: border-box;">CompletableFuture</span><span class="cm-operator" style="box-sizing: border-box;">&lt;</span><span class="cm-type" style="box-sizing: border-box; color: rgb(0, 136, 85);">Integer</span><span class="cm-operator" style="box-sizing: border-box;">&gt;</span> <span class="cm-variable" style="box-sizing: border-box;">subAsy</span> <span class="cm-operator" style="box-sizing: border-box;">=</span> <span class="cm-variable" style="box-sizing: border-box;">CompletableFuture</span>.<span class="cm-variable" style="box-sizing: border-box;">supplyAsync</span>(()<span class="cm-operator" style="box-sizing: border-box;">-&gt;</span>(<span class="cm-variable" style="box-sizing: border-box;">subFun1</span>(<span class="cm-number" style="box-sizing: border-box; color: rgb(17, 102, 68);">10</span>,<span class="cm-number" style="box-sizing: border-box; color: rgb(17, 102, 68);">5</span>)));</span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">3</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;"><span class="cm-variable" style="box-sizing: border-box;">CompletableFuture</span><span class="cm-operator" style="box-sizing: border-box;">&lt;</span><span class="cm-type" style="box-sizing: border-box; color: rgb(0, 136, 85);">Integer</span><span class="cm-operator" style="box-sizing: border-box;">&gt;</span> <span class="cm-variable" style="box-sizing: border-box;">mulAsy</span> <span class="cm-operator" style="box-sizing: border-box;">=</span> <span class="cm-variable" style="box-sizing: border-box;">CompletableFuture</span>.<span class="cm-variable" style="box-sizing: border-box;">supplyAsync</span>(()<span class="cm-operator" style="box-sizing: border-box;">-&gt;</span>(<span class="cm-variable" style="box-sizing: border-box;">mulFun1</span>(<span class="cm-number" style="box-sizing: border-box; color: rgb(17, 102, 68);">10</span>,<span class="cm-number" style="box-sizing: border-box; color: rgb(17, 102, 68);">5</span>)));</span></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="box-sizing: border-box; position: absolute; height: 13px; width: 1px; border-bottom: 0px solid transparent; top: 100px;"><br style="box-sizing: border-box;"></div>
+                    <div class="CodeMirror-gutters" style="box-sizing: content-box; width: 30px !important; border-right: 1px solid rgb(221, 221, 221); background-color: rgb(247, 247, 247); white-space: nowrap; position: absolute; left: 0px; top: 0px; min-height: 100%; z-index: 3; height: 113px;">
+                        <div class="CodeMirror-gutter CodeMirror-linenumbers" style="box-sizing: content-box; width: 31px; white-space: normal; height: 27px; display: inline-block; vertical-align: top; margin-bottom: -30px;"><br style="box-sizing: border-box;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<p style="box-sizing: border-box; margin: 5px 0px 15px; color: rgb(34, 38, 53); font-family: Cambria, serif; font-size: 19px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;">So the above methods are converted into completable futures that can process parallel.</p>
+<p style="box-sizing: border-box; margin: 5px 0px 15px; color: rgb(34, 38, 53); font-family: Cambria, serif; font-size: 19px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;">As we said in the above line all the futures are added to the global future list.</p>
+<div class="codeMirror-wrapper" style="box-sizing: border-box; color: rgb(34, 38, 53); font-family: Cambria, serif; font-size: 19px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;">
+    <div contenteditable="false" style="box-sizing: border-box;">
+        <div class="codeHeader" style="box-sizing: border-box; position: relative; padding: 0px 15px; font-family: sans-serif; font-size: 14px; background-color: rgb(247, 247, 247); color: rgb(153, 153, 153); margin: 0px;">
+            <div class="nameLanguage" style="box-sizing: border-box;">Java</div><i class="icon-cancel-circled-1 cm-remove" style="box-sizing: border-box; display: block; position: absolute; right: 0px; top: 0px; cursor: pointer;">&nbsp;</i>
+        </div>
+        <div class="codeMirror-code--wrapper" data-code="futuresList.add(addAsy); futuresList.add(subAsy); futuresList.add(mulAsy);" data-lang="text/x-java" style="box-sizing: border-box;">
+            <div class="CodeMirror cm-s-default CodeMirror-wrap" style="box-sizing: border-box; border: none; background: white; font-family: monospace; height: auto; color: black; position: relative; overflow: hidden; display: block;">
+                <div style="box-sizing: border-box; overflow: hidden; position: relative; width: 3px; height: 0px; top: 51px; left: 36px;"><textarea spellcheck="false" tabindex="0" value="" style="box-sizing: border-box; color: inherit; font: inherit; margin: 0px; overflow: auto; position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div>
+                <div class="CodeMirror-scroll" style="box-sizing: content-box; margin-bottom: 0px; margin-right: -30px; padding-bottom: 30px; height: 72px; outline: none; position: relative; overflow: visible !important;" tabindex="-1">
+                    <div class="CodeMirror-sizer" style="box-sizing: content-box; position: relative; border-right: 13px solid transparent; min-height: 77px; margin-left: 31px; margin-bottom: -17px; padding-right: 0px; padding-bottom: 0px;">
+                        <div style="box-sizing: border-box; position: relative; top: 0px;">
+                            <div class="CodeMirror-lines" style="box-sizing: border-box; padding: 4px 0px; cursor: text; min-height: 1px;">
+                                <div style="box-sizing: border-box; position: relative; outline: none;">
+                                    <div class="CodeMirror-measure" style="box-sizing: border-box; position: absolute; width: 794px; height: 0px; overflow: hidden; visibility: hidden;">
+                                        <pre style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: static; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;">
+</pre>
+                                    </div>
+                                    <div class="CodeMirror-measure" style="box-sizing: border-box; position: absolute; width: 794px; height: 0px; overflow: hidden; visibility: hidden;"><br style="box-sizing: border-box;"></div>
+                                    <div style="box-sizing: border-box; position: relative; z-index: 1;"><br style="box-sizing: border-box;"></div>
+                                    <div class="CodeMirror-cursors" style="box-sizing: border-box; visibility: hidden; position: relative; z-index: 3;">
+                                        <div class="CodeMirror-cursor" style="box-sizing: border-box; border-left: 1px solid black; border-right: none; width: 0px; position: absolute; pointer-events: none; left: 4px; top: 46px; height: 23px;"><br></div>
+                                    </div>
+                                    <div class="CodeMirror-code" style="box-sizing: border-box; outline: none; font-family: monospace; font-size: 13px;">
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">1</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;"><span class="cm-variable" style="box-sizing: border-box;">futuresList</span>.<span class="cm-variable" style="box-sizing: border-box;">add</span>(<span class="cm-variable" style="box-sizing: border-box;">addAsy</span>);</span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">2</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;"><span class="cm-variable" style="box-sizing: border-box;">futuresList</span>.<span class="cm-variable" style="box-sizing: border-box;">add</span>(<span class="cm-variable" style="box-sizing: border-box;">subAsy</span>);</span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">3</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;"><span class="cm-variable" style="box-sizing: border-box;">futuresList</span>.<span class="cm-variable" style="box-sizing: border-box;">add</span>(<span class="cm-variable" style="box-sizing: border-box;">mulAsy</span>);</span></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="box-sizing: border-box; position: absolute; height: 13px; width: 1px; border-bottom: 0px solid transparent; top: 77px;"><br style="box-sizing: border-box;"></div>
+                    <div class="CodeMirror-gutters" style="box-sizing: content-box; width: 30px !important; border-right: 1px solid rgb(221, 221, 221); background-color: rgb(247, 247, 247); white-space: nowrap; position: absolute; left: 0px; top: 0px; min-height: 100%; z-index: 3; height: 90px;">
+                        <div class="CodeMirror-gutter CodeMirror-linenumbers" style="box-sizing: content-box; width: 31px; white-space: normal; height: 27px; display: inline-block; vertical-align: top; margin-bottom: -30px;"><br style="box-sizing: border-box;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<p style="box-sizing: border-box; margin: 5px 0px 15px; color: rgb(34, 38, 53); font-family: Cambria, serif; font-size: 19px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;"><br style="box-sizing: border-box;"></p>
+<p style="box-sizing: border-box; margin: 5px 0px 15px; color: rgb(34, 38, 53); font-family: Cambria, serif; font-size: 19px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;">Then we have to write a line that keeps the agreement among all threads saying &quot;waits till all the threads in the arguments get completed&quot;. For that, we have to use &quot;allOf&quot; method.</p>
+<div class="codeMirror-wrapper" style="box-sizing: border-box; color: rgb(34, 38, 53); font-family: Cambria, serif; font-size: 19px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;">
+    <div contenteditable="false" style="box-sizing: border-box;">
+        <div class="codeHeader" style="box-sizing: border-box; position: relative; padding: 0px 15px; font-family: sans-serif; font-size: 14px; background-color: rgb(247, 247, 247); color: rgb(153, 153, 153); margin: 0px;">
+            <div class="nameLanguage" style="box-sizing: border-box;">Java</div><i class="icon-cancel-circled-1 cm-remove" style="box-sizing: border-box; display: block; position: absolute; right: 0px; top: 0px; cursor: pointer;">&nbsp;</i>
+        </div>
+        <div class="codeMirror-code--wrapper" data-code="CompletableFuture<Void> allFutures = CompletableFuture                .allOf(futuresList.toArray(new CompletableFuture[futuresList.size()]));" data-lang="text/x-java" style="box-sizing: border-box;">
+            <div class="CodeMirror cm-s-default CodeMirror-wrap" style="box-sizing: border-box; border: none; background: white; font-family: monospace; height: auto; color: black; position: relative; overflow: hidden; display: block;">
+                <div style="box-sizing: border-box; overflow: hidden; position: relative; width: 3px; height: 0px; top: 28px; left: 769px;"><textarea spellcheck="false" tabindex="0" value="" style="box-sizing: border-box; color: inherit; font: inherit; margin: 0px; overflow: auto; position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div>
+                <div class="CodeMirror-scroll" style="box-sizing: content-box; margin-bottom: 0px; margin-right: -30px; padding-bottom: 30px; height: 54px; outline: none; position: relative; overflow: visible !important;" tabindex="-1">
+                    <div class="CodeMirror-sizer" style="box-sizing: content-box; position: relative; border-right: 13px solid transparent; min-height: 54px; margin-left: 31px; margin-bottom: -17px; padding-right: 0px; padding-bottom: 0px;">
+                        <div style="box-sizing: border-box; position: relative; top: 0px;">
+                            <div class="CodeMirror-lines" style="box-sizing: border-box; padding: 4px 0px; cursor: text; min-height: 1px;">
+                                <div style="box-sizing: border-box; position: relative; outline: none;">
+                                    <div class="CodeMirror-measure" style="box-sizing: border-box; position: absolute; width: 794px; height: 0px; overflow: hidden; visibility: hidden;">
+                                        <pre style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: static; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;">
+</pre>
+                                        <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 22px !important; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4;">
+                                            <div style="box-sizing: border-box;"><br></div>
+                                        </div>
+                                    </div>
+                                    <div class="CodeMirror-measure" style="box-sizing: border-box; position: absolute; width: 794px; height: 0px; overflow: hidden; visibility: hidden;"><br style="box-sizing: border-box;"></div>
+                                    <div style="box-sizing: border-box; position: relative; z-index: 1;"><br style="box-sizing: border-box;"></div>
+                                    <div class="CodeMirror-cursors" style="box-sizing: border-box; visibility: hidden; position: relative; z-index: 3;">
+                                        <div class="CodeMirror-cursor" style="box-sizing: border-box; border-left: 1px solid black; border-right: none; width: 0px; position: absolute; pointer-events: none; left: 740.719px; top: 23px; height: 23px;"><br></div>
+                                    </div>
+                                    <div class="CodeMirror-code" style="box-sizing: border-box; outline: none; font-family: monospace; font-size: 13px;">
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">1</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;"><span class="cm-variable" style="box-sizing: border-box;">CompletableFuture</span><span class="cm-operator" style="box-sizing: border-box;">&lt;</span><span class="cm-type" style="box-sizing: border-box; color: rgb(0, 136, 85);">Void</span><span class="cm-operator" style="box-sizing: border-box;">&gt;</span> <span class="cm-variable" style="box-sizing: border-box;">allFutures</span> <span class="cm-operator" style="box-sizing: border-box;">=</span> <span class="cm-variable" style="box-sizing: border-box;">CompletableFuture</span></span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">2</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;">                .<span class="cm-variable" style="box-sizing: border-box;">allOf</span>(<span class="cm-variable" style="box-sizing: border-box;">futuresList</span>.<span class="cm-variable" style="box-sizing: border-box;">toArray</span>(<span class="cm-keyword" style="box-sizing: border-box; color: rgb(119, 0, 136);">new</span> <span class="cm-variable" style="box-sizing: border-box;">CompletableFuture</span>[<span class="cm-variable" style="box-sizing: border-box;">futuresList</span>.<span class="cm-variable" style="box-sizing: border-box;">size</span>()]));</span></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="box-sizing: border-box; position: absolute; height: 13px; width: 1px; border-bottom: 0px solid transparent; top: 54px;"><br style="box-sizing: border-box;"></div>
+                    <div class="CodeMirror-gutters" style="box-sizing: content-box; width: 30px !important; border-right: 1px solid rgb(221, 221, 221); background-color: rgb(247, 247, 247); white-space: nowrap; position: absolute; left: 0px; top: 0px; min-height: 100%; z-index: 3; height: 67px;">
+                        <div class="CodeMirror-gutter CodeMirror-linenumbers" style="box-sizing: content-box; width: 31px; white-space: normal; height: 27px; display: inline-block; vertical-align: top; margin-bottom: -30px;"><br style="box-sizing: border-box;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<p style="box-sizing: border-box; margin: 5px 0px 15px; color: rgb(34, 38, 53); font-family: Cambria, serif; font-size: 19px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;"><br style="box-sizing: border-box;"></p>
+<p style="box-sizing: border-box; margin: 5px 0px 15px; color: rgb(34, 38, 53); font-family: Cambria, serif; font-size: 19px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;">Then we have to write a line that says after the completion of execution for all threads, collect all the return values from all the threads.</p>
+<div class="codeMirror-wrapper" style="box-sizing: border-box; color: rgb(34, 38, 53); font-family: Cambria, serif; font-size: 19px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;">
+    <div contenteditable="false" style="box-sizing: border-box;">
+        <div class="codeHeader" style="box-sizing: border-box; position: relative; padding: 0px 15px; font-family: sans-serif; font-size: 14px; background-color: rgb(247, 247, 247); color: rgb(153, 153, 153); margin: 0px;">
+            <div class="nameLanguage" style="box-sizing: border-box;">Java</div><i class="icon-cancel-circled-1 cm-remove" style="box-sizing: border-box; display: block; position: absolute; right: 0px; top: 0px; cursor: pointer;">&nbsp;</i>
+        </div>
+        <div class="codeMirror-code--wrapper" data-code="CompletableFuture<List<Integer>> allCompletableFuture = allFutures.thenApply(future -> {            return futuresList.stream().map(completableFuture -> completableFuture.join())                    .collect(Collectors.toList());        });" data-lang="text/x-java" style="box-sizing: border-box;">
+            <div class="CodeMirror cm-s-default CodeMirror-wrap" style="box-sizing: border-box; border: none; background: white; font-family: monospace; height: auto; color: black; position: relative; overflow: hidden; display: block;">
+                <div style="box-sizing: border-box; overflow: hidden; position: relative; width: 3px; height: 0px; top: 120px; left: 129.141px;"><textarea spellcheck="false" tabindex="0" value="" style="box-sizing: border-box; color: inherit; font: inherit; margin: 0px; overflow: auto; position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div>
+                <div class="CodeMirror-scroll" style="box-sizing: content-box; margin-bottom: 0px; margin-right: -30px; padding-bottom: 30px; height: 90px; outline: none; position: relative; overflow: visible !important;" tabindex="-1">
+                    <div class="CodeMirror-sizer" style="box-sizing: content-box; position: relative; border-right: 13px solid transparent; min-height: 146px; margin-left: 31px; margin-bottom: -17px; padding-right: 0px; padding-bottom: 0px;">
+                        <div style="box-sizing: border-box; position: relative; top: 0px;">
+                            <div class="CodeMirror-lines" style="box-sizing: border-box; padding: 4px 0px; cursor: text; min-height: 1px;">
+                                <div style="box-sizing: border-box; position: relative; outline: none;">
+                                    <div class="CodeMirror-measure" style="box-sizing: border-box; position: absolute; width: 794px; height: 0px; overflow: hidden; visibility: hidden;">
+                                        <pre style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: static; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;">
+</pre>
+                                        <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 22px !important; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4;">
+                                            <div style="box-sizing: border-box;"><br></div>
+                                        </div>
+                                    </div>
+                                    <div class="CodeMirror-measure" style="box-sizing: border-box; position: absolute; width: 794px; height: 0px; overflow: hidden; visibility: hidden;"><br style="box-sizing: border-box;"></div>
+                                    <div style="box-sizing: border-box; position: relative; z-index: 1;"><br style="box-sizing: border-box;"></div>
+                                    <div class="CodeMirror-cursors" style="box-sizing: border-box; visibility: hidden; position: relative; z-index: 3;">
+                                        <div class="CodeMirror-cursor" style="box-sizing: border-box; border-left: 1px solid black; border-right: none; width: 0px; position: absolute; pointer-events: none; left: 97.1406px; top: 115px; height: 23px;"><br></div>
+                                    </div>
+                                    <div class="CodeMirror-code" style="box-sizing: border-box; outline: none; font-family: monospace; font-size: 13px;">
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">1</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;"><span class="cm-variable" style="box-sizing: border-box;">CompletableFuture</span><span class="cm-operator" style="box-sizing: border-box;">&lt;</span><span class="cm-variable" style="box-sizing: border-box;">List</span><span class="cm-operator" style="box-sizing: border-box;">&lt;</span><span class="cm-type" style="box-sizing: border-box; color: rgb(0, 136, 85);">Integer</span><span class="cm-operator" style="box-sizing: border-box;">&gt;&gt;</span> <span class="cm-variable" style="box-sizing: border-box;">allCompletableFuture</span> <span class="cm-operator" style="box-sizing: border-box;">=</span> <span class="cm-variable" style="box-sizing: border-box;">allFutures</span>.<span class="cm-variable" style="box-sizing: border-box;">thenApply</span>(<span class="cm-variable" style="box-sizing: border-box;">future</span> <span class="cm-operator" style="box-sizing: border-box;">-&gt;</span> {</span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">2</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;">            <span class="cm-keyword" style="box-sizing: border-box; color: rgb(119, 0, 136);">return</span> <span class="cm-variable" style="box-sizing: border-box;">futuresList</span>.<span class="cm-variable" style="box-sizing: border-box;">stream</span>().<span class="cm-variable" style="box-sizing: border-box;">map</span>(<span class="cm-variable" style="box-sizing: border-box;">completableFuture</span> <span class="cm-operator" style="box-sizing: border-box;">-&gt;</span> <span class="cm-variable" style="box-sizing: border-box;">completableFuture</span>.<span class="cm-variable" style="box-sizing: border-box;">join</span>())</span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">3</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;">                    .<span class="cm-variable" style="box-sizing: border-box;">collect</span>(<span class="cm-variable" style="box-sizing: border-box;">Collectors</span>.<span class="cm-variable" style="box-sizing: border-box;">toList</span>());</span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">4</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;">        });</span></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="box-sizing: border-box; position: absolute; height: 13px; width: 1px; border-bottom: 0px solid transparent; top: 146px;"><br style="box-sizing: border-box;"></div>
+                    <div class="CodeMirror-gutters" style="box-sizing: content-box; width: 30px !important; border-right: 1px solid rgb(221, 221, 221); background-color: rgb(247, 247, 247); white-space: nowrap; position: absolute; left: 0px; top: 0px; min-height: 100%; z-index: 3; height: 159px;">
+                        <div class="CodeMirror-gutter CodeMirror-linenumbers" style="box-sizing: content-box; width: 31px; white-space: normal; height: 27px; display: inline-block; vertical-align: top; margin-bottom: -30px;"><br style="box-sizing: border-box;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<p style="box-sizing: border-box; margin: 5px 0px 15px; color: rgb(34, 38, 53); font-family: Cambria, serif; font-size: 19px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;"><br style="box-sizing: border-box;"></p>
+<p style="box-sizing: border-box; margin: 5px 0px 15px; color: rgb(34, 38, 53); font-family: Cambria, serif; font-size: 19px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;">Finally, define the future list as a completable future.</p>
+<div class="codeMirror-wrapper" style="box-sizing: border-box; color: rgb(34, 38, 53); font-family: Cambria, serif; font-size: 19px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;">
+    <div contenteditable="false" style="box-sizing: border-box;">
+        <div class="codeHeader" style="box-sizing: border-box; position: relative; padding: 0px 15px; font-family: sans-serif; font-size: 14px; background-color: rgb(247, 247, 247); color: rgb(153, 153, 153); margin: 0px;">
+            <div class="nameLanguage" style="box-sizing: border-box;">Java</div><i class="icon-cancel-circled-1 cm-remove" style="box-sizing: border-box; display: block; position: absolute; right: 0px; top: 0px; cursor: pointer;">&nbsp;</i>
+        </div>
+        <div class="codeMirror-code--wrapper" data-code="CompletableFuture<List<Integer>> completableFuture = allCompletableFuture.toCompletableFuture();" data-lang="text/x-java" style="box-sizing: border-box;">
+            <div class="CodeMirror cm-s-default CodeMirror-wrap" style="box-sizing: border-box; border: none; background: white; font-family: monospace; height: auto; color: black; position: relative; overflow: hidden; display: block;">
+                <div style="box-sizing: border-box; overflow: hidden; position: relative; width: 3px; height: 0px; top: 27.5px; left: 400.094px;"><textarea spellcheck="false" tabindex="0" value="" style="box-sizing: border-box; color: inherit; font: inherit; margin: 0px; overflow: auto; position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div>
+                <div class="CodeMirror-scroll" style="box-sizing: content-box; margin-bottom: 0px; margin-right: -30px; padding-bottom: 30px; height: 36px; outline: none; position: relative; overflow: visible !important;" tabindex="-1">
+                    <div class="CodeMirror-sizer" style="box-sizing: content-box; position: relative; border-right: 13px solid transparent; min-height: 54px; margin-left: 31px; margin-bottom: -17px; padding-right: 0px; padding-bottom: 0px;">
+                        <div style="box-sizing: border-box; position: relative; top: 0px;">
+                            <div class="CodeMirror-lines" style="box-sizing: border-box; padding: 4px 0px; cursor: text; min-height: 1px;">
+                                <div style="box-sizing: border-box; position: relative; outline: none;">
+                                    <div class="CodeMirror-measure" style="box-sizing: border-box; position: absolute; width: 794px; height: 0px; overflow: hidden; visibility: hidden;">
+                                        <pre style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: static; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;">
+</pre>
+                                        <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 22px !important; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4;">
+                                            <div style="box-sizing: border-box;"><br></div>
+                                        </div>
+                                    </div>
+                                    <div class="CodeMirror-measure" style="box-sizing: border-box; position: absolute; width: 794px; height: 0px; overflow: hidden; visibility: hidden;"><br style="box-sizing: border-box;"></div>
+                                    <div style="box-sizing: border-box; position: relative; z-index: 1;"><br style="box-sizing: border-box;"></div>
+                                    <div class="CodeMirror-cursors" style="box-sizing: border-box; visibility: hidden; position: relative; z-index: 3;">
+                                        <div class="CodeMirror-cursor" style="box-sizing: border-box; border-left: 1px solid black; border-right: none; width: 0px; position: absolute; pointer-events: none; left: 368.094px; top: 22.5px; height: 23.5px;"><br></div>
+                                    </div>
+                                    <div class="CodeMirror-code" style="box-sizing: border-box; outline: none; font-family: monospace; font-size: 13px;">
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">1</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;"><span class="cm-variable" style="box-sizing: border-box;">CompletableFuture</span><span class="cm-operator" style="box-sizing: border-box;">&lt;</span><span class="cm-variable" style="box-sizing: border-box;">List</span><span class="cm-operator" style="box-sizing: border-box;">&lt;</span><span class="cm-type" style="box-sizing: border-box; color: rgb(0, 136, 85);">Integer</span><span class="cm-operator" style="box-sizing: border-box;">&gt;&gt;</span> <span class="cm-variable" style="box-sizing: border-box;">completableFuture</span> <span class="cm-operator" style="box-sizing: border-box;">=</span> <span class="cm-variable" style="box-sizing: border-box;">allCompletableFuture</span>.<span class="cm-variable" style="box-sizing: border-box;">toCompletableFuture</span>();</span></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="box-sizing: border-box; position: absolute; height: 13px; width: 1px; border-bottom: 0px solid transparent; top: 54px;"><br style="box-sizing: border-box;"></div>
+                    <div class="CodeMirror-gutters" style="box-sizing: content-box; width: 30px !important; border-right: 1px solid rgb(221, 221, 221); background-color: rgb(247, 247, 247); white-space: nowrap; position: absolute; left: 0px; top: 0px; min-height: 100%; z-index: 3; height: 67px;">
+                        <div class="CodeMirror-gutter CodeMirror-linenumbers" style="box-sizing: content-box; width: 31px; white-space: normal; height: 27px; display: inline-block; vertical-align: top; margin-bottom: -30px;"><br style="box-sizing: border-box;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<p style="box-sizing: border-box; margin: 5px 0px 15px; color: rgb(34, 38, 53); font-family: Cambria, serif; font-size: 19px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;"><br style="box-sizing: border-box;"></p>
+<p style="box-sizing: border-box; margin: 5px 0px 15px; color: rgb(34, 38, 53); font-family: Cambria, serif; font-size: 19px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;">All the setup has done for making the parallel processing using completable future. To call that entire parallel method, below is the line using get()</p>
+<div class="codeMirror-wrapper" style="box-sizing: border-box; color: rgb(34, 38, 53); font-family: Cambria, serif; font-size: 19px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;">
+    <div contenteditable="false" style="box-sizing: border-box;">
+        <div class="codeHeader" style="box-sizing: border-box; position: relative; padding: 0px 15px; font-family: sans-serif; font-size: 14px; background-color: rgb(247, 247, 247); color: rgb(153, 153, 153); margin: 0px;">
+            <div class="nameLanguage" style="box-sizing: border-box;">Java</div><i class="icon-cancel-circled-1 cm-remove" style="box-sizing: border-box; display: block; position: absolute; right: 0px; top: 0px; cursor: pointer;">&nbsp;</i>
+        </div>
+        <div class="codeMirror-code--wrapper" data-code=" try {            List<Integer> finalList = (List<Integer>) completableFuture.get();            System.out.print(finalList);        } catch (InterruptedException e) {            e.printStackTrace();        } catch (ExecutionException e) {            e.printStackTrace();        }" data-lang="text/x-java" style="box-sizing: border-box;">
+            <div class="CodeMirror cm-s-default CodeMirror-wrap" style="box-sizing: border-box; border: none; background: white; font-family: monospace; height: auto; color: black; position: relative; overflow: hidden; display: block;">
+                <div style="box-sizing: border-box; overflow: hidden; position: relative; width: 3px; height: 0px; top: 166px; left: 112.219px;"><textarea spellcheck="false" tabindex="0" value="" style="box-sizing: border-box; color: inherit; font: inherit; margin: 0px; overflow: auto; position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div>
+                <div class="CodeMirror-scroll" style="box-sizing: content-box; margin-bottom: 0px; margin-right: -30px; padding-bottom: 30px; height: 162px; outline: none; position: relative; overflow: visible !important;" tabindex="-1">
+                    <div class="CodeMirror-sizer" style="box-sizing: content-box; position: relative; border-right: 13px solid transparent; min-height: 192px; margin-left: 31px; margin-bottom: -17px; padding-right: 0px; padding-bottom: 0px;">
+                        <div style="box-sizing: border-box; position: relative; top: 0px;">
+                            <div class="CodeMirror-lines" style="box-sizing: border-box; padding: 4px 0px; cursor: text; min-height: 1px;">
+                                <div style="box-sizing: border-box; position: relative; outline: none;">
+                                    <div class="CodeMirror-measure" style="box-sizing: border-box; position: absolute; width: 794px; height: 0px; overflow: hidden; visibility: hidden;">
+                                        <pre style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: static; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;">
+</pre>
+                                        <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 22px !important; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4;">
+                                            <div style="box-sizing: border-box;"><br></div>
+                                        </div>
+                                    </div>
+                                    <div class="CodeMirror-measure" style="box-sizing: border-box; position: absolute; width: 794px; height: 0px; overflow: hidden; visibility: hidden;"><br style="box-sizing: border-box;"></div>
+                                    <div style="box-sizing: border-box; position: relative; z-index: 1;"><br style="box-sizing: border-box;"></div>
+                                    <div class="CodeMirror-cursors" style="box-sizing: border-box; visibility: hidden; position: relative; z-index: 3;">
+                                        <div class="CodeMirror-cursor" style="box-sizing: border-box; border-left: 1px solid black; border-right: none; width: 0px; position: absolute; pointer-events: none; left: 80.2188px; top: 161px; height: 23px;"><br></div>
+                                    </div>
+                                    <div class="CodeMirror-code" style="box-sizing: border-box; outline: none; font-family: monospace; font-size: 13px;">
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">1</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;"> <span class="cm-keyword" style="box-sizing: border-box; color: rgb(119, 0, 136);">try</span> {</span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">2</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;">            <span class="cm-variable" style="box-sizing: border-box;">List</span><span class="cm-operator" style="box-sizing: border-box;">&lt;</span><span class="cm-type" style="box-sizing: border-box; color: rgb(0, 136, 85);">Integer</span><span class="cm-operator" style="box-sizing: border-box;">&gt;</span> <span class="cm-variable" style="box-sizing: border-box;">finalList</span> <span class="cm-operator" style="box-sizing: border-box;">=</span> (<span class="cm-variable" style="box-sizing: border-box;">List</span><span class="cm-operator" style="box-sizing: border-box;">&lt;</span><span class="cm-type" style="box-sizing: border-box; color: rgb(0, 136, 85);">Integer</span><span class="cm-operator" style="box-sizing: border-box;">&gt;</span>) <span class="cm-variable" style="box-sizing: border-box;">completableFuture</span>.<span class="cm-variable" style="box-sizing: border-box;">get</span>();</span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">3</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;">            <span class="cm-variable" style="box-sizing: border-box;">System</span>.<span class="cm-variable" style="box-sizing: border-box;">out</span>.<span class="cm-variable" style="box-sizing: border-box;">print</span>(<span class="cm-variable" style="box-sizing: border-box;">finalList</span>);</span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">4</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;">        } <span class="cm-keyword" style="box-sizing: border-box; color: rgb(119, 0, 136);">catch</span> (<span class="cm-variable" style="box-sizing: border-box;">InterruptedException</span> <span class="cm-variable" style="box-sizing: border-box;">e</span>) {</span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">5</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;">            <span class="cm-variable" style="box-sizing: border-box;">e</span>.<span class="cm-variable" style="box-sizing: border-box;">printStackTrace</span>();</span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">6</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;">        } <span class="cm-keyword" style="box-sizing: border-box; color: rgb(119, 0, 136);">catch</span> (<span class="cm-variable" style="box-sizing: border-box;">ExecutionException</span> <span class="cm-variable" style="box-sizing: border-box;">e</span>) {</span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">7</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;">            <span class="cm-variable" style="box-sizing: border-box;">e</span>.<span class="cm-variable" style="box-sizing: border-box;">printStackTrace</span>();</span></pre>
+                                        </div>
+                                        <div style="box-sizing: border-box; position: relative;">
+                                            <div class="CodeMirror-gutter-wrapper" style="box-sizing: border-box; position: absolute; z-index: 4; background: none !important; border: none !important; left: -31px;">
+                                                <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="box-sizing: content-box; width: 23px; padding: 0px 3px 0px 5px; min-width: 20px; text-align: right; color: rgb(153, 153, 153); white-space: nowrap; position: absolute; cursor: default; z-index: 4; left: 0px;">8</div>
+                                            </div>
+                                            <pre class=" CodeMirror-line " style="box-sizing: border-box; overflow: visible; font-family: inherit; font-size: inherit; display: block; padding: 0px 4px; margin: 0px; line-height: inherit; word-break: normal; overflow-wrap: break-word; color: inherit; background: transparent; border: 0px solid rgb(204, 204, 204); border-radius: 0px; white-space: pre-wrap; z-index: 2; position: relative; -webkit-tap-highlight-color: transparent; font-variant-ligatures: contextual;"><span style="box-sizing: border-box; padding-right: 0.1px;">        }</span></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="box-sizing: border-box; position: absolute; height: 13px; width: 1px; border-bottom: 0px solid transparent; top: 192px;"><br style="box-sizing: border-box;"></div>
+                    <div class="CodeMirror-gutters" style="box-sizing: content-box; width: 30px !important; border-right: 1px solid rgb(221, 221, 221); background-color: rgb(247, 247, 247); white-space: nowrap; position: absolute; left: 0px; top: 0px; min-height: 100%; z-index: 3; height: 205px;">
+                        <div class="CodeMirror-gutter CodeMirror-linenumbers" style="box-sizing: content-box; width: 31px; white-space: normal; height: 27px; display: inline-block; vertical-align: top; margin-bottom: -30px;"><br style="box-sizing: border-box;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<p style="box-sizing: border-box; margin: 5px 0px 15px; color: rgb(34, 38, 53); font-family: Cambria, serif; font-size: 19px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;">You will get all the results in finalList variable.</p>
+<p style="box-sizing: border-box; margin: 5px 0px 15px; color: rgb(34, 38, 53); font-family: Cambria, serif; font-size: 19px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;">To get the things more clear, I have written for loop inside each method to process sysout multiple times to make each thread more time in that method.</p>
+<p style="box-sizing: border-box; margin: 5px 0px 15px; color: rgb(34, 38, 53); font-family: Cambria, serif; font-size: 19px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;">After executing the program just analyze the sysout comments and trace the control for better understanding.</p>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <hr>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <ul class="list-inline text-center">
+            <li class="list-inline-item">
+              <a href="#">
+                <span class="fa-stack fa-lg">
+                  <i class="fas fa-circle fa-stack-2x"></i>
+                  <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+            </li>
+            <li class="list-inline-item">
+              <a href="#">
+                <span class="fa-stack fa-lg">
+                  <i class="fas fa-circle fa-stack-2x"></i>
+                  <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+            </li>
+            <li class="list-inline-item">
+              <a href="#">
+                <span class="fa-stack fa-lg">
+                  <i class="fas fa-circle fa-stack-2x"></i>
+                  <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+            </li>
+          </ul>
+          <p class="copyright text-muted">Copyright &copy; Your Website 2019</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Custom scripts for this template -->
+  <script src="js/clean-blog.min.js"></script>
+
+</body>
+
+</html>
